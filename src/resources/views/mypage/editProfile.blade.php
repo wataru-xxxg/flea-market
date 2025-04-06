@@ -16,12 +16,13 @@
 <div class="container">
     <h1 class="profile-title">プロフィール設定</h1>
 
-    <div class="profile-image-container">
-        <div class="profile-image"></div>
-        <button class="image-select-button">画像を選択する</button>
-    </div>
+    <form action="/mypage/profile" method="post">
+        <div class="profile-image-container">
+            <div class="profile-image"></div>
+            <input type="file" name="image" class="image-select-button">
+            <!-- <button class="image-select-button">画像を選択する</button> -->
+        </div>
 
-    <form>
         <div class="form-group">
             <label class="form-label">ユーザー名</label>
             <input type="text" class="form-input">

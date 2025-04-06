@@ -23,7 +23,15 @@
     background-color: #d9d9d9;
 }
 
-.image-select-button {
+.image-select-button::file-selector-button {
+    width: 100px;
+    height: 40px;
+    opacity: 0;
+    position: relative;
+}
+
+.image-select-button::before {
+    position: absolute;
     margin-left: 40px;
     padding: 10px 20px;
     background-color: #fff;
@@ -31,6 +39,7 @@
     border: 2px solid #ff5555;
     border-radius: 5px;
     cursor: pointer;
+    content: "画像を選択する";
 }
 
 .form-group {
