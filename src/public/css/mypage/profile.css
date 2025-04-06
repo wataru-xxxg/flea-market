@@ -1,0 +1,139 @@
+.profile-section {
+    padding: 40px 20px;
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.profile-image-container {
+    margin-right: 30px;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+}
+
+.username {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.profile-actions {
+    margin-left: auto;
+}
+
+.edit-profile-button {
+    display: inline-block;
+    color: #ff3a3a;
+    border: 1px solid #ff3a3a;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.edit-profile-button:hover {
+    background-color: #ff3a3a;
+    color: white;
+}
+
+/* Product Tabs */
+.product-tabs {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tab {
+    padding: 15px 30px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tab.active {
+    color: #ff3a3a;
+    border-bottom: 2px solid #ff3a3a;
+    font-weight: bold;
+}
+
+/* Products Grid */
+.products-grid {
+    max-width: 1200px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.product-card {
+    margin-bottom: 20px;
+}
+
+.product-image {
+    background-color: #e0e0e0;
+    height: 200px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #333;
+}
+
+.product-name {
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .profile-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-image-container {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .profile-actions {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-container {
+        display: none;
+    }
+}
