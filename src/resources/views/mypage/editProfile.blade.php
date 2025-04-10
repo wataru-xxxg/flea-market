@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="{{ asset('css/mypage/editProfile.css') }}">
 @endsection
 
+@section('js')
+<script defer src="/js/editProfile.js"></script>
+@endsection
+
 @section('search')
 @include('components.search')
 @endsection
@@ -16,31 +20,95 @@
 <div class="container">
     <h1 class="profile-title">プロフィール設定</h1>
 
-    <form action="/mypage/profile" method="post">
-        <div class="profile-image-container">
-            <div class="profile-image"></div>
-            <input type="file" name="image" class="image-select-button">
-            <!-- <button class="image-select-button">画像を選択する</button> -->
+    <div class="profile-image-container">
+        @if($user->profile)
+        <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image" id="profile-image">
+        @else
+        <img src="" alt="プロフィール画像" class="profile-image" id="profile-image">
+        @endif
+
+        <button type="button" class="image-select-button" id="image-select-button">画像を選択する</button>
+
+        @error('image')
+        <div class="image-error">
+            {{ $message }}
         </div>
+        @enderror
+    </div>
+
+    <form action="/mypage/profile" method="post" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="id" value="{{ $user->id }}">
+        <input type="file" name="image" class="hidden-input" id="hidden-input" onchange="preview(this, 'profile-image');">
 
         <div class="form-group">
             <label class="form-label">ユーザー名</label>
-            <input type="text" class="form-input">
+
+            @if (count($errors) > 0)
+            <input type="text" class="form-input" name="name" value="{{ old('name') }}">
+            @else
+            <input type="text" class="form-input" name="name" value="{{ $user->name }}">
+            @endif
+
+            @error('name')
+            <div class="form-error">
+                {{ $message }}
+            </div>
+            @enderror
         </div>
 
         <div class="form-group">
             <label class="form-label">郵便番号</label>
-            <input type="text" class="form-input">
+
+            @if (count($errors) > 0)
+            <input type="text" class="form-input" name="postCode" value="{{ old('postCode') }}">
+            @elseif($user->profile)
+            <input type="text" class="form-input" name="postCode" value="{{ $user->profile->getPostCode() }}">
+            @else
+            <input type="text" class="form-input" name="postCode" value="">
+            @endif
+
+            @error('postCode')
+            <div class="form-error">
+                {{ $message }}
+            </div>
+            @enderror
         </div>
 
         <div class="form-group">
             <label class="form-label">住所</label>
-            <input type="text" class="form-input">
+
+            @if (count($errors) > 0)
+            <input type="text" class="form-input" name="address" value="{{ old('address') }}">
+            @elseif ($user->profile)
+            <input type="text" class="form-input" name="address" value="{{ $user->profile->getAddress() }}">
+            @else
+            <input type="text" class="form-input" name="address" value="">
+            @endif
+
+            @error('address')
+            <div class="form-error">
+                {{ $message }}
+            </div>
+            @enderror
         </div>
 
         <div class="form-group">
             <label class="form-label">建物名</label>
-            <input type="text" class="form-input">
+
+            @if (count($errors) > 0)
+            <input type="text" class="form-input" name="building" value="{{ old('building') }}">
+            @elseif($user->profile)
+            <input type="text" class="form-input" name="building" value="{{ $user->profile->getBuilding() }}">
+            @else
+            <input type="text" class="form-input" name="building" value="">
+            @endif
+
+            @error('building')
+            <div class="form-error">
+                {{ $message }}
+            </div>
+            @enderror
         </div>
 
         <button type="submit" class="update-button">更新する</button>

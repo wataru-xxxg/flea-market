@@ -24,8 +24,14 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'mimes:jpeg,png',
-            'extensions:jpeg,png',
+            'image' => 'mimes:jpeg,png',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'image.mines' => 'jpegまたはpngファイルを選択してください。',
         ];
     }
 }
