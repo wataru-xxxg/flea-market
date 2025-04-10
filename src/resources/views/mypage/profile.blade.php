@@ -16,13 +16,17 @@
 <div class="profile-section">
     <div class="profile-container">
         <div class="profile-image-container">
-            <img src="profile-placeholder.png" alt="プロフィール画像" class="profile-image">
+            @if($user->profile)
+            <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image">
+            @else
+            <img src="" alt="プロフィール画像" class="profile-image">
+            @endif
         </div>
         <div class="profile-info">
-            <h1 class="username">ユーザー名</h1>
+            <h1 class="username">{{ $user->name }}</h1>
         </div>
         <div class="profile-actions">
-            <a href="#" class="edit-profile-button">プロフィールを編集</a>
+            <a href="/mypage/profile" class="edit-profile-button">プロフィールを編集</a>
         </div>
     </div>
 </div>

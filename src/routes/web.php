@@ -21,4 +21,5 @@ Route::get("/", [ProductController::class, "index"]);
 Route::middleware('auth')->group(function () {
     Route::get('/mypage', [MyPageController::class, 'index']);
     Route::get('/mypage/profile', [MyPageController::class, 'edit']);
+    Route::post('/mypage/profile', [MyPageController::class, 'upsert']);
 });
