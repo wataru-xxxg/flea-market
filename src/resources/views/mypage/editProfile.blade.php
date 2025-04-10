@@ -20,26 +20,25 @@
 <div class="container">
     <h1 class="profile-title">プロフィール設定</h1>
 
-    <div class="profile-image-container">
-        @if($user->profile)
-        <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image" id="profile-image">
-        @else
-        <img src="" alt="プロフィール画像" class="profile-image" id="profile-image">
-        @endif
-
-        <button type="button" class="image-select-button" id="image-select-button">画像を選択する</button>
-
-        @error('image')
-        <div class="image-error">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-
     <form action="/mypage/profile" method="post" enctype="multipart/form-data">
         @csrf
+        <div class="profile-image-container">
+            @if($user->profile)
+            <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image" id="profile-image">
+            @else
+            <img src="" alt="プロフィール画像" class="profile-image" id="profile-image">
+            @endif
+
+            <input type="file" name="image" class="image-select-button">
+
+            @error('image')
+            <div class="image-error">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+
         <input type="hidden" name="id" value="{{ $user->id }}">
-        <input type="file" name="image" class="hidden-input" id="hidden-input" onchange="preview(this, 'profile-image');">
 
         <div class="form-group">
             <label class="form-label">ユーザー名</label>
