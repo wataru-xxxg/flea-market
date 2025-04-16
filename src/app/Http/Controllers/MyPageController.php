@@ -20,7 +20,7 @@ class MyPageController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view("mypage.editProfile", compact("user"));
+        return view("mypage.edit_profile", compact("user"));
     }
 
     public function upsert(AddressRequest $request)
@@ -32,25 +32,26 @@ class MyPageController extends Controller
                 (new ProfileRequest())->messages()
             )->validate();
         }
-
+        $profile_arguments = $request->only('post_code', 'address', 'building');
         $user = Auth::user();
         $id = Auth::id();
+        $profile_arguments['user_id'] = $id;
         $profile = $user->profile;
         $request->merge(['user_id' => $id]);
         $image = $request->file('image');
 
         if ($image !== null) {
-            $imagePath = $image->store('public/image/profile');
-            $request->merge(['imagePath' => $imagePath]);
+            $image_path = $image->store('public/image/profile');
+            $profile_arguments['image_path'] = $image_path;
         } else {
-            $request->merge(['imagePath' => 'public/image/profile/default.png']);
+            $profile_arguments['image_path'] = 'public/image/profile/default.png';
         }
 
         if ($profile && !($profile->isDefaultImage())) {
             Storage::delete($profile->getImagePath());
         }
 
-        Profile::upsert($request->only('user_id', 'imagePath', 'postCode', 'address', 'building'), ['user_id'], ['imagePath', 'postCode', 'address', 'building']);
+        Profile::upsert($profile_arguments, ['user_id']);
         return redirect('/');
     }
 }

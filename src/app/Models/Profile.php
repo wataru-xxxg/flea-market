@@ -9,15 +9,17 @@ class Profile extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id',];
+
     protected $fillable = ['user_id', 'imagePath', 'postCode', 'address', 'building'];
 
     public function getImagePath()
     {
-        return $this->imagePath;
+        return $this->image_path;
     }
     public function getPostCode()
     {
-        return $this->postCode;
+        return $this->post_code;
     }
     public function getAddress()
     {
@@ -30,6 +32,6 @@ class Profile extends Model
 
     public function isDefaultImage()
     {
-        return $this->imagePath === 'public/image/profile/default.png';
+        return $this->image_path === 'public/image/profile/default.png';
     }
 }

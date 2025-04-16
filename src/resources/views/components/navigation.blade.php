@@ -8,5 +8,5 @@
     <a href="/login" class="nav-link">ログイン</a>
     @endif
     <a href="/mypage" class="nav-link">マイページ</a>
-    <a href="#" class="listing-button">出品</a>
+    <a href="/sell" class="listing-button">出品</a>
 </div>
