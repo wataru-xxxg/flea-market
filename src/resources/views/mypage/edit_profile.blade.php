@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/mypage/editProfile.css') }}">
-@endsection
-
-@section('js')
-<script defer src="/js/editProfile.js"></script>
+<link rel="stylesheet" href="{{ asset('css/mypage/edit_profile.css') }}">
 @endsection
 
 @section('search')
@@ -23,10 +19,12 @@
     <form action="/mypage/profile" method="post" enctype="multipart/form-data">
         @csrf
         <div class="profile-image-container">
-            @if($user->profile)
-            <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image" id="profile-image">
-            @else
+            @if($user->profile === null)
             <img src="" alt="プロフィール画像" class="profile-image" id="profile-image">
+            @elseif($user->profile->getImagePath() === null)
+            <img src="" alt="プロフィール画像" class="profile-image" id="profile-image">
+            @else
+            <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image" id="profile-image">
             @endif
 
             <input type="file" name="image" class="image-select-button">
@@ -60,14 +58,14 @@
             <label class="form-label">郵便番号</label>
 
             @if (count($errors) > 0)
-            <input type="text" class="form-input" name="postCode" value="{{ old('postCode') }}">
+            <input type="text" class="form-input" name="post_code" value="{{ old('post_code') }}">
             @elseif($user->profile)
-            <input type="text" class="form-input" name="postCode" value="{{ $user->profile->getPostCode() }}">
+            <input type="text" class="form-input" name="post_code" value="{{ $user->profile->getPostCode() }}">
             @else
-            <input type="text" class="form-input" name="postCode" value="">
+            <input type="text" class="form-input" name="post_code" value="">
             @endif
 
-            @error('postCode')
+            @error('post_code')
             <div class="form-error">
                 {{ $message }}
             </div>

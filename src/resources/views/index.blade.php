@@ -18,20 +18,12 @@
     <a href="#">マイリスト</a>
 </nav>
 
-<div class="product-container">
-    <div class="product-card">
-        <div class="product-image">商品画像</div>
-        <div class="product-name">商品名</div>
-    </div>
-
-    <div class="product-card">
-        <div class="product-image">商品画像</div>
-        <div class="product-name">商品名</div>
-    </div>
-
-    <div class="product-card">
-        <div class="product-image">商品画像</div>
-        <div class="product-name">商品名</div>
-    </div>
+<div class="items-grid">
+    @foreach ($items as $item)
+    <figure class="item-card">
+        <a href="/item/{{ $item->id }}"><img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="item-image"></a>
+        <figcaption class="item-name">{{ $item->name }}</figcaption>
+    </figure>
+    @endforeach
 </div>
 @endsection

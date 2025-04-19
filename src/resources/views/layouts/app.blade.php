@@ -15,7 +15,7 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <img src="/logo.svg" alt="ロゴマーク" class="header__logo">
+            <a href="/"><img src="/logo.svg" alt="ロゴマーク" class="header-logo"></a>
             @yield('search')
             @yield('navigation')
         </div>
