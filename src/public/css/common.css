@@ -14,7 +14,7 @@ body {
 }
 
 .header-logo {
-    width: 20%;
+    width: 100%;
 }
 
 .search-container {
@@ -39,7 +39,15 @@ body {
     align-items: center;
 }
 
-.nav-link {
+.login-button {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 1.125rem;
+    font-weight: 400;
+}
+
+.mypage-button {
     color: #ffffff;
     text-decoration: none;
     margin-left: 20px;
@@ -69,4 +77,22 @@ body {
     font-size: 1.125rem;
     font-weight: 400;
     margin-left: 20px;
+}
+
+@media (max-width: 1024px) {
+    .search-container {
+        margin: 0 10px;
+    }
+
+    .logout-button,
+    .login-button {
+        font-size: 1rem;
+        margin-left: 0px;
+    }
+
+    .mypage-button,
+    .listing-button {
+        font-size: 1rem;
+        margin-left: 10px;
+    }
 }

@@ -43,12 +43,10 @@ class MyPageController extends Controller
         if ($image !== null) {
             $image_path = $image->store('public/image/profile');
             $profile_arguments['image_path'] = $image_path;
-        } else {
-            $profile_arguments['image_path'] = 'public/image/profile/default.png';
         }
 
-        if ($profile && !($profile->isDefaultImage())) {
-            Storage::delete($profile->getImagePath());
+        if ($profile) {
+            if ($profile->getImagePath()) Storage::delete($profile->getImagePath());
         }
 
         Profile::upsert($profile_arguments, ['user_id']);

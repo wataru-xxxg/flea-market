@@ -25,23 +25,30 @@
         <p class="price"><span class="yen-mark">￥</span>{{ number_format($item->price) }} <span class="including-tax">(税込)</span></p>
 
         <div class="actions">
-            <div class="star-button">
-                <a href="/item/favorite/{{ $item->id }}">
-                    <div class="icon">★</div>
+            <div class="favorite-button">
+                @if (count($item->favorites) > 0)
+                <a href="/item/favorite/{{ $item->id }}" class="favorite-link">
+                    <div class="favorite-icon favorite-added">★</div>
                 </a>
-                @if ($item->favorites === null)
-                <div>0</div>
-                @else
                 <div>{{ $item->favorites()->count() }}</div>
+                @else
+                <a href="/item/favorite/{{ $item->id }}" class="favorite-link">
+                    <div class="favorite-icon">★</div>
+                </a>
+                <div>0</div>
                 @endif
             </div>
             <div class="comment-button">
-                <div class="icon">💬</div>
-                <div>1</div>
+                <div class="comment-icon">💬</div>
+                @if ($item->comments === null)
+                <div>0</div>
+                @else
+                <div>{{ $item->comments()->count() }}</div>
+                @endif
             </div>
         </div>
 
-        <button class="buy-button">購入手続きへ</button>
+        <a href="/purchase/{{ $item->id }}" class="buy-button">購入手続きへ</a>
 
         <h2 class="section-title">商品説明</h2>
 
@@ -77,24 +84,49 @@
             @endswitch
         </div>
 
-        <h2 class="section-title">コメント(1)</h2>
+        <h2 class="section-title">コメント(
+            <span>
+                @if ($item->comments === null)
+                0
+                @else
+                {{ $item->comments()->count() }}
+                @endif
+            </span>
+            )
+        </h2>
 
         <div class="comments-section">
+            @foreach ($item->comments as $comment)
             <div class="comment">
-                <div class="comment-avatar"></div>
-                <div>
-                    <div>admin</div>
-                    <div class="comment-text">こちらにコメントが入ります。</div>
+                <figure class="comment-profile"></figure>
+                <div class="comment-profile">
+                    @if ($comment->user->profile === null)
+                    <img src="{{ asset('default.png') }}" alt="プロフィール画像" class="profile-image">
+                    @elseif ($comment->user->profile->getImagePath() === null)
+                    <img src="{{ asset('default.png') }}" alt="プロフィール画像" class="profile-image">
+                    @else
+                    <img src="{{ asset(Storage::url($comment->user->profile->getImagePath())) }}" alt="プロフィール画像"
+                        class="profile-image">
+                    @endif
+                    <div class="profile-name">{{ $comment->user->name }}</div>
                 </div>
+                <p class="comment-text">{{ $comment->comment }}</p>
             </div>
+            @endforeach
         </div>
 
         <h2 class="section-title">商品へのコメント</h2>
 
-        <div class="comment-form">
-            <textarea placeholder="コメントを入力"></textarea>
-            <button class="comment-submit">コメントを送信する</button>
+        @error('comment')
+        <div class="form-error">
+            {{ $message }}
         </div>
+        @enderror
+
+        <form action="/item/comment/{{ $item->id }}" class="comment-form">
+            <textarea name="comment">{{ old('comment') }}</textarea>
+            <button class="comment-submit">コメントを送信する</button>
+        </form>
     </div>
 </div>
 @endsection

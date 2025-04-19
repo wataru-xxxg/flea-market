@@ -18,6 +18,7 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
+    color: #e0e0e0;
     background-color: #e0e0e0;
     display: flex;
     align-items: center;
@@ -72,7 +73,7 @@
 .items-grid {
     margin: 30px auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     gap: 20px;
     padding: 0 20px;
 }
@@ -83,8 +84,8 @@
 
 .item-image {
     background-color: #e0e0e0;
-    width: 250px;
-    height: 250px;
+    max-width: 290px;
+    max-height: 290px;
     border-radius: 5px;
     margin-bottom: 10px;
     display: flex;
@@ -96,11 +97,4 @@
 
 .item-name {
     font-size: 14px;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .items-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
 }

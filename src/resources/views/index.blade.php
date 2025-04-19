@@ -18,7 +18,7 @@
     <a href="#">マイリスト</a>
 </nav>
 
-<div class="items-container">
+<div class="items-grid">
     @foreach ($items as $item)
     <figure class="item-card">
         <a href="/item/{{ $item->id }}"><img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="item-image"></a>

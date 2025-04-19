@@ -29,9 +29,4 @@ class Profile extends Model
     {
         return $this->building;
     }
-
-    public function isDefaultImage()
-    {
-        return $this->image_path === 'public/image/profile/default.png';
-    }
 }

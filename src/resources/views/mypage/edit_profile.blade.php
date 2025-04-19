@@ -19,10 +19,12 @@
     <form action="/mypage/profile" method="post" enctype="multipart/form-data">
         @csrf
         <div class="profile-image-container">
-            @if($user->profile)
-            <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image" id="profile-image">
-            @else
+            @if($user->profile === null)
             <img src="" alt="プロフィール画像" class="profile-image" id="profile-image">
+            @elseif($user->profile->getImagePath() === null)
+            <img src="" alt="プロフィール画像" class="profile-image" id="profile-image">
+            @else
+            <img src="{{ asset(Storage::url($user->profile->getImagePath())) }}" alt="プロフィール画像" class="profile-image" id="profile-image">
             @endif
 
             <input type="file" name="image" class="image-select-button">
