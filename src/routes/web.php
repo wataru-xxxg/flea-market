@@ -3,6 +3,7 @@
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::post("/sell", [ItemController::class, "exhibit"]);
     Route::get("/item/favorite/{item_id}", [ItemController::class, "favorite"]);
     Route::get("/item/comment/{item_id}", [ItemController::class, "comment"]);
-    Route::get("/purchase/{item_id}", [PurchaseController::class, 'purchase']);
-    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'address']);
+    Route::get("/purchase/{item_id}", [PurchaseController::class, 'purchase'])->name('purchase');
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'address'])->name('address');
     Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress']);
+    Route::post('/stripe/payment', [StripeController::class, 'payment'])->name('payment');
+    Route::get('/stripe/success', [StripeController::class, 'success'])->name('success');
+    Route::get('/stripe/cancel', [StripeController::class, 'cancel'])->name('cancel');
 });

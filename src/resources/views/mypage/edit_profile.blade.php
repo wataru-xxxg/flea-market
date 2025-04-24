@@ -58,11 +58,11 @@
             <label class="form-label">郵便番号</label>
 
             @if (count($errors) > 0)
-            <input type="text" class="form-input" name="post_code" value="{{ old('post_code') }}">
+            <input type="text" class="form-input" name="postCode" value="{{ old('post_code') }}">
             @elseif($user->profile)
-            <input type="text" class="form-input" name="post_code" value="{{ $user->profile->getPostCode() }}">
+            <input type="text" class="form-input" name="postCode" value="{{ $user->profile->getPostCode() }}">
             @else
-            <input type="text" class="form-input" name="post_code" value="">
+            <input type="text" class="form-input" name="postCode" value="">
             @endif
 
             @error('post_code')
@@ -109,6 +109,13 @@
         </div>
 
         <button type="submit" class="update-button">更新する</button>
+        @if (count($errors) > 0)
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{$error}}</li>
+            @endforeach
+        </ul>
+        @endif
     </form>
 </div>
 @endsection

@@ -15,11 +15,11 @@ class Profile extends Model
 
     public function getImagePath()
     {
-        return $this->image_path;
+        return $this->imagePath;
     }
     public function getPostCode()
     {
-        return $this->post_code;
+        return $this->postCode;
     }
     public function getAddress()
     {

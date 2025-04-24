@@ -22,10 +22,24 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
+        $user = Auth::user();
         $items = Item::all();
+
+        if (is_null($user)) {
+            return view("index", compact("items"));
+        }
+
+        $mylist = false;
+
+        if ($request->page == 'mylist') {
+            $mylist = true;
+            return view("index", compact("mylist"));
+        }
+
+        $items = $items->where("user_id", "<>", $user->id);
         return view("index", compact("items"));
     }
-    public function sell(Request $request)
+    public function sell()
     {
         $categories = Category::all();
         return view('sell', compact('categories'));
@@ -82,5 +96,11 @@ class ItemController extends Controller
         $comment->save();
 
         return redirect(route('item', ['item_id' => $item_id]));
+    }
+
+    public function myList()
+    {
+        $items = Item::where('user_id', Auth::id())->get();
+        return view("index", compact("items"));
     }
 }

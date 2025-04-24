@@ -32,18 +32,49 @@
 
     <div class="items-container">
         <div class="item-tabs">
-            <div class="tab active">出品した商品</div>
-            <div class="tab">購入した商品</div>
+            @if (isset($buy))
+            <a href="/mypage/?page=sell" class="tab">出品した商品</a>
+            <a href="/mypage/?page=buy" class="tab active">購入した商品</a>
+            @elseif (isset($sell))
+            <a href="/mypage/?page=sell" class="tab active">出品した商品</a>
+            <a href="/mypage/?page=buy" class="tab">購入した商品</a>
+            @else
+            <a href="/mypage/?page=sell" class="tab">出品した商品</a>
+            <a href="/mypage/?page=buy" class="tab">購入した商品</a>
+            @endif
         </div>
 
         <div class="items-grid">
+            @if (isset($buy))
+            @if ($user->purchases != null)
+            @foreach ($user->purchases as $purchase)
+            <figure class="item-card">
+                <a href="/item/{{ $purchase->item->id }}"><img src="{{ asset(Storage::url($purchase->item->getImagePath())) }}" alt="商品画像" class="item-image grayed-out"></a>
+                <figcaption class="item-name">{{ $purchase->item->name }}</figcaption>
+                <p class="sold">Sold</p>
+            </figure>
+            @endforeach
+            @endif
+            @elseif (isset($sell))
             @if ($user->items != null)
             @foreach ($user->items as $item)
             <figure class="item-card">
-                <a href="/item/{{ $item->id }}">
-                    <img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="item-image">
-                </a>
+                <a href="/item/{{ $item->id }}"><img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="item-image @if ($item->purchased === 1) grayed-out @endif"></a>
                 <figcaption class="item-name">{{ $item->name }}</figcaption>
+                @if ($item->purchased === 1)
+                <p class="sold">Sold</p>
+                @endif
+            </figure>
+            @endforeach
+            @endif
+            @else
+            @foreach ($items as $item)
+            <figure class="item-card">
+                <a href="/item/{{ $item->id }}"><img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="item-image @if ($item->purchased === 1) grayed-out @endif"></a>
+                <figcaption class="item-name">{{ $item->name }}</figcaption>
+                @if ($item->purchased === 1)
+                <p class="sold">Sold</p>
+                @endif
             </figure>
             @endforeach
             @endif
