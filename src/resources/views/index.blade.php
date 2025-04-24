@@ -14,16 +14,36 @@
 
 @section('content')
 <nav class="tab-menu">
-    <a href="#" class="active">おすすめ</a>
-    <a href="#">マイリスト</a>
+    @if (isset($mylist))
+    <a href="/">おすすめ</a>
+    <a href="/?page=mylist" class="active">マイリスト</a>
+    @else
+    <a href="/" class="active">おすすめ</a>
+    <a href="/?page=mylist">マイリスト</a>
+    @endif
 </nav>
 
 <div class="items-grid">
-    @foreach ($items as $item)
+    @if (isset($mylist))
+    @foreach (Auth::user()->favorites as $favorite)
     <figure class="item-card">
-        <a href="/item/{{ $item->id }}"><img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="item-image"></a>
-        <figcaption class="item-name">{{ $item->name }}</figcaption>
+        <a href="/item/{{ $favorite->item->id }}"><img src="{{ asset(Storage::url($favorite->item->getImagePath())) }}" alt="商品画像" class="item-image @if ($favorite->item->purchased === 1) grayed-out @endif"></a>
+        <figcaption class="item-name">{{ $favorite->item->name }}</figcaption>
+        @if ($favorite->item->purchased === 1)
+        <p class="sold">Sold</p>
+        @endif
     </figure>
     @endforeach
+    @else
+    @foreach ($items as $item)
+    <figure class="item-card">
+        <a href="/item/{{ $item->id }}"><img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="item-image @if ($item->purchased === 1) grayed-out @endif"></a>
+        <figcaption class="item-name">{{ $item->name }}</figcaption>
+        @if ($item->purchased === 1)
+        <p class="sold">Sold</p>
+        @endif
+    </figure>
+    @endforeach
+    @endif
 </div>
 @endsection

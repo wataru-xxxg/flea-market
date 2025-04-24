@@ -9,9 +9,9 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id',];
 
-    protected $fillable = ['user_id', 'name', 'brand', 'description', 'image_path', 'condition', 'price', 'purchased'];
+
+    protected $fillable = ['id', 'user_id', 'name', 'brand', 'description', 'image_path', 'condition', 'price', 'purchased'];
 
     public function categories()
     {
@@ -21,6 +21,11 @@ class Item extends Model
     public function getImagePath()
     {
         return $this->image_path;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function favorites()

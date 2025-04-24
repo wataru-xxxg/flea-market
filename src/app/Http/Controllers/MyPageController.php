@@ -5,16 +5,35 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\Item;
 use App\Models\Profile;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class MyPageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $page = $request->page;
         $user = Auth::user();
-        return view("mypage.profile", compact("user"));
+        $items = Item::all();
+
+        if (is_null($page)) {
+            return view("mypage.profile", compact("user", "items"));
+        }
+
+        if ($page == "buy") {
+            $buy = true;
+            return view("mypage.profile", compact("user", "buy"));
+        }
+
+        if ($page == "sell") {
+            $sell = true;
+            return view("mypage.profile", compact("user", "sell"));
+        }
+
+        return view("mypage.profile", compact("user", "items"));
     }
 
     public function edit()
@@ -32,7 +51,7 @@ class MyPageController extends Controller
                 (new ProfileRequest())->messages()
             )->validate();
         }
-        $profile_arguments = $request->only('post_code', 'address', 'building');
+        $profile_arguments = $request->only('postCode', 'address', 'building');
         $user = Auth::user();
         $id = Auth::id();
         $profile_arguments['user_id'] = $id;
@@ -41,8 +60,8 @@ class MyPageController extends Controller
         $image = $request->file('image');
 
         if ($image !== null) {
-            $image_path = $image->store('public/image/profile');
-            $profile_arguments['image_path'] = $image_path;
+            $imagePath = $image->store('public/image/profile');
+            $profile_arguments['imagePath'] = $imagePath;
         }
 
         if ($profile) {
