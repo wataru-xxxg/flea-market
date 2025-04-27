@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="{{ asset('css/sell.css') }}">
 @endsection
 
+@section('livewire')
+@livewireStyles
+@endsection
+
 @section('search')
 @include('components.search')
 @endsection
@@ -23,7 +27,7 @@
         <section class="item-section">
             <label class="section-label">商品画像</label>
             <div class="image-upload-box">
-                <input type="file" name="image" class="image-select-button">
+                <livewire:preview-item-image />
             </div>
             @error('image')
             <div class="form-error">
@@ -119,4 +123,7 @@
         </div>
     </form>
 </div>
+
+@livewireScripts
+
 @endsection
