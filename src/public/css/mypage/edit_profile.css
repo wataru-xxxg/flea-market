@@ -10,6 +10,8 @@
 }
 
 .profile-image-container {
+    height: 120px;
+    line-height: 120px;
     display: flex;
     flex-direction: row;
     align-items: center;
