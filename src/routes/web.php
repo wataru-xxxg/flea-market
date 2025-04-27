@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/mail", [ItemController::class, "mail"]);
 Route::get("/first-time", [ItemController::class, "firstTime"]);
-Route::get("/", [ItemController::class, "index"]);
+Route::match(['get', 'post'], "/", [ItemController::class, "index"]);
 Route::get("/item/{item_id}", [ItemController::class, "item"])->name("item");
 Route::middleware('auth')->group(function () {
     Route::get('/mypage', [MyPageController::class, 'index']);

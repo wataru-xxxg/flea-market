@@ -23,21 +23,25 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $items = Item::all();
+
+        if ($request->isMethod("get")) {
+            $search = "";
+        } else {
+            $search = $request->search;
+        }
 
         if (is_null($user)) {
-            return view("index", compact("items"));
+            return view("index", compact("search"));
         }
 
         $mylist = false;
 
         if ($request->page == 'mylist') {
             $mylist = true;
-            return view("index", compact("mylist"));
+            return view("index", compact("mylist", "search"));
         }
 
-        $items = $items->where("user_id", "<>", $user->id);
-        return view("index", compact("items"));
+        return view("index", compact("search"));
     }
     public function sell()
     {

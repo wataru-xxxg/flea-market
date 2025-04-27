@@ -37,4 +37,19 @@ class Item extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function scopeLikeName($query, $keyword)
+    {
+        return $query->where('name', 'like', '%' . $keyword . '%');
+    }
+
+    public function scopeWhereInItemIds($query, $itemIds)
+    {
+        return $query->whereIn('id', $itemIds);
+    }
+
+    public function scopeNotMyItems($query, $userId)
+    {
+        return $query->where("user_id", "<>", $userId);;
+    }
 }
