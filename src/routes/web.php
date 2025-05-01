@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +20,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/mail", [ItemController::class, "mail"]);
-Route::get("/first-time", [ItemController::class, "firstTime"]);
 Route::match(['get', 'post'], "/", [ItemController::class, "index"]);
 Route::get("/item/{item_id}", [ItemController::class, "item"])->name("item");
 Route::middleware('auth')->group(function () {
+    Route::get("/mail", [AuthController::class, "mail"]);
     Route::get('/mypage', [MyPageController::class, 'index']);
     Route::get('/mypage/profile', [MyPageController::class, 'edit']);
     Route::post('/mypage/profile', [MyPageController::class, 'upsert']);
@@ -36,3 +38,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/stripe/success', [StripeController::class, 'success'])->name('success');
     Route::get('/stripe/cancel', [StripeController::class, 'cancel'])->name('cancel');
 });
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

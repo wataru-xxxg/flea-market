@@ -11,10 +11,11 @@
         <p>メール認証を完了してください。</p>
     </div>
 
-    <a href="#" class="verification-button">認証はこちらから</a>
+    <a href="/login" class="verification-button">認証はこちらから</a>
 
-    <div class="resend-link">
-        <a href="#">認証メールを再送する</a>
-    </div>
+    <form action="/email/verification-notification" method="post" class="resend-link">
+        @csrf
+        <input type="submit" value="認証メールを再送する">
+    </form>
 </div>
 @endsection
