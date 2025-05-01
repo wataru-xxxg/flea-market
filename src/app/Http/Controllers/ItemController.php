@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
-
-    public function mail(Request $request)
-    {
-        return view("mail");
-    }
-
     public function index(Request $request)
     {
         $user = Auth::user();
@@ -32,6 +26,10 @@ class ItemController extends Controller
 
         if (is_null($user)) {
             return view("index", compact("search"));
+        }
+
+        if (is_null($user->email_verified_at)) {
+            Auth::logout();
         }
 
         $mylist = false;
@@ -65,6 +63,14 @@ class ItemController extends Controller
 
     public function item($item_id)
     {
+        $user = Auth::user();
+
+        if ($user) {
+            if (is_null($user->email_verified_at)) {
+                Auth::logout();
+            }
+        }
+
         $item = Item::find($item_id);
         return view('item', compact('item'));
     }
