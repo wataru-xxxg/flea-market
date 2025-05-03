@@ -24,11 +24,10 @@
     margin-bottom: 40px;
 }
 
-.resend-link {
-    margin-top: 50px;
-}
-
-.resend-link a {
+.resend-button {
+    font-size: 1rem;
+    border: none;
+    margin-top: 20px;
     color: #007bff;
-    text-decoration: none;
+    background-color: #fff;
 }
