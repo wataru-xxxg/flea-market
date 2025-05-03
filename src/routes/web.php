@@ -23,7 +23,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::match(['get', 'post'], "/", [ItemController::class, "index"]);
 Route::get("/item/{item_id}", [ItemController::class, "item"])->name("item");
 Route::middleware('auth')->group(function () {
-    Route::get("/mail", [AuthController::class, "mail"]);
     Route::get('/mypage', [MyPageController::class, 'index']);
     Route::get('/mypage/profile', [MyPageController::class, 'edit']);
     Route::post('/mypage/profile', [MyPageController::class, 'upsert']);

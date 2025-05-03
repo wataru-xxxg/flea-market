@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/mail.css') }}">
+<link rel="stylesheet" href="{{ asset('css/auth/verify-email.css') }}">
 @endsection
 
 @section('content')
@@ -13,9 +13,9 @@
 
     <a href="/login" class="verification-button">認証はこちらから</a>
 
-    <form action="/email/verification-notification" method="post" class="resend-link">
+    <form action="/email/verification-notification" method="post">
         @csrf
-        <input type="submit" value="認証メールを再送する">
+        <input type="submit" value="認証メールを再送する" class="resend-button">
     </form>
 </div>
 @endsection
