@@ -44,24 +44,7 @@ class ItemTest extends TestCase
     public function testPurchasedItem()
     {
         Item::factory()->create([
-            'user_id' => 1,
             'name' => 'test',
-            'brand' => 'test',
-            'description' => 'test',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 1000,
-            'purchased' => 1
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test',
-            'description' => 'test',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 1000,
             'purchased' => 1
         ]);
 
@@ -72,36 +55,11 @@ class ItemTest extends TestCase
 
     public function testExhibitedItem()
     {
-        $user = User::factory()->create([
-            'name' => 'test',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest')
-        ]);
-
-        $this->assertDatabaseHas('users', [
-            'name' => 'test',
-            'email' => 'mail@mail.com',
-        ]);
+        $user = User::factory()->create();
 
         Item::factory()->create([
             'user_id' => $user->id,
             'name' => 'test',
-            'brand' => 'test',
-            'description' => 'test',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 1000,
-            'purchased' => 1
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => $user->id,
-            'name' => 'test',
-            'brand' => 'test',
-            'description' => 'test',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 1000,
             'purchased' => 1
         ]);
 

@@ -14,4 +14,11 @@ RUN curl -sSL https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhs
   chmod +x mhsendmail && \
   mv mhsendmail /usr/local/bin/mhsendmail
 
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
+
 WORKDIR /var/www

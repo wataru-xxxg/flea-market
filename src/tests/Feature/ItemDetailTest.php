@@ -21,30 +21,9 @@ class ItemDetailTest extends TestCase
      */
     public function testShowRequiredInformation()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
+        $user = User::factory()->create(['name' => 'test_user']);
 
         $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 1000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
             'user_id' => 1,
             'name' => 'test',
             'brand' => 'test_brand',
@@ -59,16 +38,7 @@ class ItemDetailTest extends TestCase
             'name' => 'test_category',
         ]);
 
-        $this->assertDatabaseHas('categories', [
-            'name' => 'test_category',
-        ]);
-
         DB::table('category_item')->insert([
-            'category_id' => $category->id,
-            'item_id' => $item->id
-        ]);
-
-        $this->assertDatabaseHas('category_item', [
             'category_id' => $category->id,
             'item_id' => $item->id
         ]);
@@ -78,18 +48,7 @@ class ItemDetailTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this->assertDatabaseHas('favorites', [
-            'item_id' => $item->id,
-            'user_id' => $user->id,
-        ]);
-
         Comment::factory()->create([
-            'item_id' => $item->id,
-            'user_id' => $user->id,
-            'comment' => 'test_comment'
-        ]);
-
-        $this->assertDatabaseHas('comments', [
             'item_id' => $item->id,
             'user_id' => $user->id,
             'comment' => 'test_comment'
@@ -127,22 +86,7 @@ class ItemDetailTest extends TestCase
             'purchased' => 0
         ]);
 
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 1000,
-            'purchased' => 0
-        ]);
-
         $category1 = Category::factory()->create([
-            'name' => 'test_category1',
-        ]);
-
-        $this->assertDatabaseHas('categories', [
             'name' => 'test_category1',
         ]);
 
@@ -150,26 +94,12 @@ class ItemDetailTest extends TestCase
             'name' => 'test_category2',
         ]);
 
-        $this->assertDatabaseHas('categories', [
-            'name' => 'test_category2',
-        ]);
-
         DB::table('category_item')->insert([
             'category_id' => $category1->id,
             'item_id' => $item->id
         ]);
 
-        $this->assertDatabaseHas('category_item', [
-            'category_id' => $category1->id,
-            'item_id' => $item->id
-        ]);
-
         DB::table('category_item')->insert([
-            'category_id' => $category2->id,
-            'item_id' => $item->id
-        ]);
-
-        $this->assertDatabaseHas('category_item', [
             'category_id' => $category2->id,
             'item_id' => $item->id
         ]);

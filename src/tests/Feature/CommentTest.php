@@ -17,39 +17,9 @@ class CommentTest extends TestCase
      */
     public function testCanComment()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
-
-        $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
+        $item = Item::factory()->create();
 
         $response = $this->actingAs($user)
             ->post('/item/comment/1', ['comment' => 'test_comment']);
@@ -68,39 +38,9 @@ class CommentTest extends TestCase
 
     public function testCantComment()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
-
-        $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
+        $item = Item::factory()->create();
 
         $response = $this->post('/item/comment/2', ['comment' => 'test_comment']);
 
@@ -118,39 +58,9 @@ class CommentTest extends TestCase
 
     public function testValidateEmptyComment()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
-
-        $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
+        Item::factory()->create();
 
         $response = $this->actingAs($user)
             ->post('/item/comment/3', ['comment' => '']);
@@ -162,39 +72,9 @@ class CommentTest extends TestCase
 
     public function testValidateCommentCount()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
-
-        $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
+        Item::factory()->create();
 
         $comment = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 

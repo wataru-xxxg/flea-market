@@ -17,39 +17,9 @@ class FavoriteTest extends TestCase
      */
     public function testFavoriteButton()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
-
-        $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
+        $item = Item::factory()->create();
 
         $response = $this->actingAs($user)
             ->get('/item/favorite/1');
@@ -68,39 +38,9 @@ class FavoriteTest extends TestCase
 
     public function testIconColor()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
-
-        $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
+        $item = Item::factory()->create();
 
         $response = $this->get('/item/2');
 
@@ -123,39 +63,9 @@ class FavoriteTest extends TestCase
 
     public function testCancellation()
     {
-        $user = User::factory()->create([
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-            'password' => bcrypt('testtest'),
-            'email_verified_at' => date("Y-m-d H:i:s"),
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'test_user',
-            'email' => 'mail@mail.com',
-        ]);
-
-        $item = Item::factory()->create([
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => 1,
-            'name' => 'test',
-            'brand' => 'test_brand',
-            'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
-            'condition' => 1,
-            'price' => 2000,
-            'purchased' => 0
-        ]);
+        $item = Item::factory()->create();
 
         $response = $this->get('/item/3');
 
