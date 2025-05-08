@@ -24,22 +24,21 @@ class ItemController extends Controller
             $search = $request->search;
         }
 
+        $mylist = false;
+
+        if ($request->page == 'mylist') {
+            $mylist = true;
+        }
+
         if (is_null($user)) {
-            return view("index", compact("search"));
+            return view("index", compact("mylist", "search"));
         }
 
         if (is_null($user->email_verified_at)) {
             Auth::logout();
         }
 
-        $mylist = false;
-
-        if ($request->page == 'mylist') {
-            $mylist = true;
-            return view("index", compact("mylist", "search"));
-        }
-
-        return view("index", compact("search"));
+        return view("index", compact("mylist", "search"));
     }
     public function sell()
     {
@@ -83,7 +82,11 @@ class ItemController extends Controller
             ->where('user_id', $user_id)
             ->first();
 
-        if ($existingFavorite === null) {
+        if ($existingFavorite) {
+            Favorite::where('item_id', $changed_item_id)
+                ->where('user_id', $user_id)
+                ->delete();
+        } else {
             $favorite = new Favorite();
             $favorite->item_id = $changed_item_id;
             $favorite->user_id = $user_id;

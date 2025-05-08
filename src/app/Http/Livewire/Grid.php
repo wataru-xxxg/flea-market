@@ -51,7 +51,7 @@ class Grid extends Component
         $keyword = $this->search;
 
         if (is_null($user)) {
-            $keyword === "" ? $this->results = Item::all() : $this->results = Item::likeName($keyword)->get();
+            $this->mylist ? $this->results = [] : $this->results = Item::likeName($keyword)->get();
             return;
         }
 

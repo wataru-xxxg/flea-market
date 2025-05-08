@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Item;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Search extends Component

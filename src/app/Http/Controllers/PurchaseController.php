@@ -21,9 +21,9 @@ class PurchaseController extends Controller
     {
         $user = Auth::user();
         $payment = $request->payment;
-        $postCode = $request->only('postCode')['postCode'];
-        $address = $request->only('address')['address'];
-        $building = $request->only('building')['building'];
+        array_key_exists('postCode', $request->all()) ? $postCode = $request->only('postCode')['postCode'] : $postCode = '';
+        array_key_exists('address', $request->all()) ? $address = $request->only('address')['address'] : $address = '';
+        array_key_exists('building', $request->all()) ? $building = $request->only('building')['building'] : $building = '';
 
         return view('address', compact('item_id', 'user', 'payment', 'postCode', 'address', 'building'));
     }

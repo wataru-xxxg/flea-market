@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get("/sell", [ItemController::class, "sell"]);
     Route::post("/sell", [ItemController::class, "exhibit"]);
     Route::get("/item/favorite/{item_id}", [ItemController::class, "favorite"]);
-    Route::get("/item/comment/{item_id}", [ItemController::class, "comment"]);
+    Route::post("/item/comment/{item_id}", [ItemController::class, "comment"]);
     Route::get("/purchase/{item_id}", [PurchaseController::class, 'purchase'])->name('purchase');
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'address'])->name('address');
     Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress']);
