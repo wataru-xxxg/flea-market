@@ -7,6 +7,7 @@ use Livewire\Component;
 class Menu extends Component
 {
     public $search = "";
+    public $mylist = false;
     protected $listeners = [
         'searchUpdated' => 'handleSearchUpdate'
     ];

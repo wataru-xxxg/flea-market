@@ -30,20 +30,20 @@
                 <a href="/item/favorite/{{ $item->id }}" class="favorite-link">
                     <div class="favorite-icon favorite-added">★</div>
                 </a>
-                <div>{{ $item->favorites()->count() }}</div>
+                <div class="favorite-count">{{ $item->favorites()->count() }}</div>
                 @else
                 <a href="/item/favorite/{{ $item->id }}" class="favorite-link">
                     <div class="favorite-icon">★</div>
                 </a>
-                <div>0</div>
+                <div class="favorite-count">0</div>
                 @endif
             </div>
             <div class="comment-button">
                 <div class="comment-icon">💬</div>
                 @if ($item->comments === null)
-                <div>0</div>
+                <div class="comment-count">0</div>
                 @else
-                <div>{{ $item->comments()->count() }}</div>
+                <div class="comment-count">{{ $item->comments()->count() }}</div>
                 @endif
             </div>
         </div>
@@ -123,7 +123,8 @@
         </div>
         @enderror
 
-        <form action="/item/comment/{{ $item->id }}" class="comment-form">
+        <form action="/item/comment/{{ $item->id }}" method="post" class="comment-form">
+            @csrf
             <textarea name="comment">{{ old('comment') }}</textarea>
             <button class="comment-submit">コメントを送信する</button>
         </form>

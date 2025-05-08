@@ -6,7 +6,7 @@
         @else
         <input wire:model="search" type="hidden" name="search" value="{{ $search }}">
         @endif
-        @if (isset($mylist))
+        @if ($mylist)
         <input type="submit" value="おすすめ" class="recommend" formaction="/">
         <input type="submit" value="マイリスト" class="mylist active" formaction="/?page=mylist">
         @else

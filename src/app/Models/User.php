@@ -64,4 +64,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Purchase::class);
     }
+
+    public function setAttribute($key, $value)
+    {
+        if ($key !== $this->getRememberTokenName()) {
+            parent::setAttribute($key, $value);
+        }
+    }
 }
