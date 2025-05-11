@@ -12,24 +12,27 @@ use Tests\TestCase;
 class ExhibitTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
+
     public function test_example()
     {
-        $user = User::factory()->create();
-
         $itemImage = UploadedFile::fake()->image('item.jpeg');
 
         $category = Category::factory()->create();
 
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->get('/sell')
             ->assertStatus(200);
 
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->post('/sell', [
                 'image' => $itemImage,
                 'categories' => $category->id,

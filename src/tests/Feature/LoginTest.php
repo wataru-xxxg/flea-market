@@ -9,11 +9,7 @@ use App\Models\User;
 class LoginTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
     public function testValidateEmail()
     {
         $response = $this->get('/login');

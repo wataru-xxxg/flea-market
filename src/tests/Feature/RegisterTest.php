@@ -8,12 +8,8 @@ use Tests\TestCase;
 class RegisterTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testValidateName()
+
+    public function testValidateRequiredName()
     {
         $response = $this->get('/register');
 
@@ -30,7 +26,7 @@ class RegisterTest extends TestCase
         $this->get('/register')->assertSee('お名前を入力してください');
     }
 
-    public function testValidateEmail()
+    public function testValidateRequiredEmail()
     {
         $response = $this->get('/register');
 
@@ -47,7 +43,7 @@ class RegisterTest extends TestCase
         $this->get('/register')->assertSee('メールアドレスを入力してください');
     }
 
-    public function testValidatePassword()
+    public function testValidateRequiredPassword()
     {
         $response = $this->get('/register');
 

@@ -11,18 +11,21 @@ use Livewire\Livewire;
 class PaymentMethodTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
+
     public function testImmediateReflection()
     {
-        $user = User::factory()->create();
-
         Item::factory()->create();
 
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->get('/purchase/1')
             ->assertSeeLivewire('select')
             ->assertSeeLivewire('payment');

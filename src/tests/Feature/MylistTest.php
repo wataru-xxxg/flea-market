@@ -12,62 +12,62 @@ use Livewire\Livewire;
 class MylistTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
     public function testFavoriteItem()
     {
-        $user = User::factory()->create();
+        $favoriteItem = Item::factory()->create(['name' => 'favoriteItem']);
 
-        $item = Item::factory()->create(['name' => 'test1']);
-
-        Item::factory()->create(['name' => 'test2']);
+        Item::factory()->create(['name' => 'test']);
 
         Favorite::factory()->create([
-            'item_id' => $item->id,
-            'user_id' => $user->id,
+            'item_id' => $favoriteItem->id,
+            'user_id' => $this->user->id,
         ]);
 
         $this->assertDatabaseHas('favorites', [
-            'item_id' => $item->id,
-            'user_id' => $user->id,
+            'item_id' => $favoriteItem->id,
+            'user_id' => $this->user->id,
         ]);
 
         $this->get('/?page=mylist')->assertSeeLivewire('grid');
 
-        Livewire::actingAs($user)->test('grid', ['mylist' => true])
-            ->assertSee('test1')
-            ->assertDontSee('test2');
+        Livewire::actingAs($this->user)->test('grid', ['mylist' => true])
+            ->assertSee('favoriteItem')
+            ->assertDontSee('test');
     }
 
     public function testPurchasedItem()
     {
-        $user = User::factory()->create();
-
-        $item = Item::factory()->create([
-            'name' => 'test1',
+        $purchasedItem = Item::factory()->create([
+            'name' => 'purchasedItem',
             'purchased' => 1
         ]);
 
-        Item::factory()->create(['name' => 'test2',]);
+        Item::factory()->create(['name' => 'notPurchasedItem',]);
 
         Favorite::factory()->create([
-            'item_id' => $item->id,
-            'user_id' => $user->id,
+            'item_id' => $purchasedItem->id,
+            'user_id' => $this->user->id,
         ]);
 
         $this->assertDatabaseHas('favorites', [
-            'item_id' => $item->id,
-            'user_id' => $user->id,
+            'item_id' => $purchasedItem->id,
+            'user_id' => $this->user->id,
         ]);
 
         $this->get('/?page=mylist')->assertSeeLivewire('grid');
 
-        Livewire::actingAs($user)
+        Livewire::actingAs($this->user)
             ->test('grid', ['mylist' => true])
-            ->assertSee('test1')->assertDontSee('test2')
+            ->assertSee('purchasedItem')
+            ->assertDontSee('notPurchasedItem')
             ->assertSee('Sold');
     }
 
@@ -76,33 +76,33 @@ class MylistTest extends TestCase
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
 
-        $item1 = Item::factory()->create([
+        $user1ExhibitedItem = Item::factory()->create([
             'user_id' => $user1->id,
             'name' => 'test1',
         ]);
 
-        $item2 = Item::factory()->create([
+        $user2ExhibitedItem = Item::factory()->create([
             'user_id' => $user2->id,
             'name' => 'test2',
         ]);
 
         Favorite::factory()->create([
-            'item_id' => $item1->id,
+            'item_id' => $user1ExhibitedItem->id,
             'user_id' => $user1->id,
         ]);
 
         $this->assertDatabaseHas('favorites', [
-            'item_id' => $item1->id,
+            'item_id' => $user1ExhibitedItem->id,
             'user_id' => $user1->id,
         ]);
 
         Favorite::factory()->create([
-            'item_id' => $item2->id,
+            'item_id' => $user2ExhibitedItem->id,
             'user_id' => $user1->id,
         ]);
 
         $this->assertDatabaseHas('favorites', [
-            'item_id' => $item2->id,
+            'item_id' => $user2ExhibitedItem->id,
             'user_id' => $user1->id,
         ]);
 

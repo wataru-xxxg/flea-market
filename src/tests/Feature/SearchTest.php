@@ -12,11 +12,7 @@ use Livewire\Livewire;
 class SearchTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
     public function testPartialMatch()
     {
         Item::factory()->create(['name' => 'test1']);
@@ -34,23 +30,23 @@ class SearchTest extends TestCase
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
 
-        $item1 = Item::factory()->create([
+        $user2ExhibitedItem1 = Item::factory()->create([
             'user_id' => $user2->id,
-            'name' => 'test1',
+            'name' => 'user2ExhibitedItem1',
         ]);
 
-        $item2 = Item::factory()->create([
+        $user2ExhibitedItem2 = Item::factory()->create([
             'user_id' => $user2->id,
-            'name' => 'test2',
+            'name' => 'user2ExhibitedItem2',
         ]);
 
         Favorite::factory()->create([
-            'item_id' => $item1->id,
+            'item_id' => $user2ExhibitedItem1->id,
             'user_id' => $user1->id,
         ]);
 
         Favorite::factory()->create([
-            'item_id' => $item2->id,
+            'item_id' => $user2ExhibitedItem2->id,
             'user_id' => $user1->id,
         ]);
 
@@ -58,7 +54,7 @@ class SearchTest extends TestCase
 
         Livewire::actingAs($user1)
             ->test('grid', ['mylist' => true, 'search' => '1'])
-            ->assertSee('test1')
-            ->assertDontSee('test2');
+            ->assertSee('user2ExhibitedItem1')
+            ->assertDontSee('user2ExhibitedItem12');
     }
 }
