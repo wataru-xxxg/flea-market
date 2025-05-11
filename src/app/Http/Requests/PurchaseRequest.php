@@ -24,7 +24,6 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'item_id' => 'required',
             'payment' => 'required|not_in:disabled',
             'deliveryAddress' => 'required',
         ];

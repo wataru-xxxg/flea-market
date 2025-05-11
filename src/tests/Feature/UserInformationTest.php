@@ -12,22 +12,24 @@ use Tests\TestCase;
 class UserInformationTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create(['name' => 'test_user',]);
+    }
     public function testGet()
     {
-        $user = User::factory()->create(['name' => 'test_user',]);
-
         $profile = Profile::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'imagePath' => 'test_path'
         ]);
 
         $exhibitedItem = Item::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'name' => 'exhibitedItem'
         ]);
 
@@ -38,38 +40,36 @@ class UserInformationTest extends TestCase
 
         Purchase::factory()->create([
             'item_id' => $purchasedItem->id,
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
 
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->get('/mypage')
             ->assertStatus(200)
-            ->assertSeeInOrder([$profile->imagePath, $user->name]);
+            ->assertSeeInOrder([$profile->imagePath, $this->user->name]);
 
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->get('/mypage/?page=sell')
             ->assertSee($exhibitedItem->name);
 
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->get('/mypage/?page=buy')
             ->assertSee($purchasedItem->name);
     }
 
     public function testChange()
     {
-        $user = User::factory()->create(['name' => 'test_user',]);
-
         $profile = Profile::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'imagePath' => 'test_path'
         ]);
 
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->get('/mypage/profile')
             ->assertStatus(200)
             ->assertSeeInOrder([
                 $profile->imagePath,
-                $user->name,
+                $this->user->name,
                 $profile->postCode,
                 $profile->address,
                 $profile->building

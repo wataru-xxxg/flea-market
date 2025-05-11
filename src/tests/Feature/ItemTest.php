@@ -13,11 +13,7 @@ use App\Models\User;
 class ItemTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
     public function testAllItems()
     {
         $this->seed(CategoriesTableSeeder::class);

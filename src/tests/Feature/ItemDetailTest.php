@@ -14,11 +14,7 @@ use Tests\TestCase;
 class ItemDetailTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
     public function testShowRequiredInformation()
     {
         $user = User::factory()->create(['name' => 'test_user']);
