@@ -18,7 +18,7 @@ class ItemFactory extends Factory
             'name' => $this->faker->name(),
             'brand' => $this->faker->name(),
             'description' => $this->faker->sentence(),
-            'image_path' => $this->faker->imageUrl(),
+            'imagePath' => $this->faker->imageUrl(),
             'condition' => $this->faker->numberBetween(1, 4),
             'price' => $this->faker->numberBetween(100, 1000000),
             'purchased' => 0,

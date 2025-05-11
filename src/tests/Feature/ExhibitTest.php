@@ -47,7 +47,7 @@ class ExhibitTest extends TestCase
         Storage::disk('public')->assertExists('image/item/' . $itemImage->hashName());
 
         $this->assertDatabaseHas('items', [
-            'image_path' => 'public/image/item/' . $itemImage->hashName(),
+            'imagePath' => 'public/image/item/' . $itemImage->hashName(),
             'condition' => 1,
             'name' => 'test',
             'brand' => 'test_brand',

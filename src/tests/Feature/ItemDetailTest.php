@@ -24,7 +24,7 @@ class ItemDetailTest extends TestCase
             'name' => 'test',
             'brand' => 'test_brand',
             'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
+            'imagePath' => '/image/item/Test.jpg',
             'condition' => 1,
             'price' => 1000,
             'purchased' => 0
@@ -76,7 +76,7 @@ class ItemDetailTest extends TestCase
             'name' => 'test',
             'brand' => 'test_brand',
             'description' => 'test_description',
-            'image_path' => '/image/item/Test.jpg',
+            'imagePath' => '/image/item/Test.jpg',
             'condition' => 1,
             'price' => 1000,
             'purchased' => 0
