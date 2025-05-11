@@ -54,7 +54,7 @@ class ItemController extends Controller
         $item_arguments['user_id'] = $id;
         $image = $request->file('image');
         $image_path = $image->store('public/image/item');
-        $item_arguments['image_path'] = $image_path;
+        $item_arguments['imagePath'] = $image_path;
 
         Item::create($item_arguments)->categories()->sync($request->categories);
         return redirect('/');

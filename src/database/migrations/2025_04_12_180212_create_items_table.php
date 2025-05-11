@@ -19,7 +19,7 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->string('brand')->nullable();
             $table->string('description');
-            $table->string('image_path');
+            $table->string('imagePath');
             $table->tinyInteger('condition');
             $table->integer('price');
             $table->boolean('purchased');
