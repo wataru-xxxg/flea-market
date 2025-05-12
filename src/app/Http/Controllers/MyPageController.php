@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\User;
 use App\Models\Item;
 use App\Models\Profile;
 use Illuminate\Http\Request;
@@ -16,7 +17,9 @@ class MyPageController extends Controller
     public function index(Request $request)
     {
         $page = $request->page;
+
         $user = Auth::user();
+
         $items = Item::all();
 
         if (is_null($page)) {
@@ -51,6 +54,7 @@ class MyPageController extends Controller
                 (new ProfileRequest())->messages()
             )->validate();
         }
+        User::find($request->id)->update(['name' => $request->name]);
         $profile_arguments = $request->only('postCode', 'address', 'building');
         $user = Auth::user();
         $id = Auth::id();
