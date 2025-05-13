@@ -31,7 +31,7 @@ class ProfileRequest extends FormRequest
     public function messages()
     {
         return [
-            'image.mines' => 'jpegまたはpngファイルを選択してください。',
+            'image.mimes' => 'jpegまたはpngファイルを選択してください。',
         ];
     }
 }

@@ -22,7 +22,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::match(['get', 'post'], "/", [ItemController::class, "index"]);
 Route::get("/item/{item_id}", [ItemController::class, "item"])->name("item");
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage', [MyPageController::class, 'index']);
     Route::get('/mypage/profile', [MyPageController::class, 'edit']);
     Route::post('/mypage/profile', [MyPageController::class, 'upsert']);
@@ -31,9 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get("/item/favorite/{item_id}", [ItemController::class, "favorite"]);
     Route::post("/item/comment/{item_id}", [ItemController::class, "comment"]);
     Route::get("/purchase/{item_id}", [PurchaseController::class, 'purchase'])->name('purchase');
-    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'address'])->name('address');
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'address']);
     Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress']);
-    Route::post('/stripe/payment', [StripeController::class, 'payment'])->name('payment');
+    Route::post('/stripe/payment', [StripeController::class, 'payment']);
     Route::get('/stripe/success', [StripeController::class, 'success'])->name('success');
     Route::get('/stripe/cancel', [StripeController::class, 'cancel'])->name('cancel');
 });
