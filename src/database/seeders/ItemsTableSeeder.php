@@ -129,7 +129,7 @@ class ItemsTableSeeder extends Seeder
         Item::create($param)->categories()->sync([10]);
 
         $image = file_get_contents('https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg');
-        Storage::put('public/image/Mill.jpg', $image);
+        Storage::put('public/image/item/Mill.jpg', $image);
         $param = [
             'user_id' => 1,
             'name' => 'コーヒーミル',
@@ -143,7 +143,7 @@ class ItemsTableSeeder extends Seeder
         Item::create($param)->categories()->sync([10]);
 
         $image = file_get_contents('https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg');
-        Storage::put('public/image/Make.jpg', $image);
+        Storage::put('public/image/item/Make.jpg', $image);
         $param = [
             'user_id' => 1,
             'name' => 'メイクセット',
