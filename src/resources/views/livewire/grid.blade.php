@@ -6,7 +6,6 @@
             <figcaption class="item-name">{{ $result->name }}</figcaption>
             @if ($result->purchased === 1)
             <p class="sold">Sold</p>
-            <p>test</p>
             @endif
         </figure>
         @endforeach
