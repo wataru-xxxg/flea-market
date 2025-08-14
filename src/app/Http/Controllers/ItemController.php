@@ -31,14 +31,18 @@ class ItemController extends Controller
         }
 
         if (is_null($user)) {
-            return view("index", compact("mylist", "search"));
+            $mylist = false;
+            return view("index", compact("search", "mylist"));
         }
 
         if (is_null($user->email_verified_at)) {
             Auth::logout();
         }
 
-        return view("index", compact("mylist", "search"));
+        // マイリストページの判定を修正
+        $mylist = ($request->page === 'mylist');
+
+        return view("index", compact("search", "mylist"));
     }
     public function sell()
     {

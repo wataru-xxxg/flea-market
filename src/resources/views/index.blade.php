@@ -24,9 +24,11 @@
 
 @section('content')
 <nav class="menu-container">
+    @if ($mylist)
     <livewire:menu :mylist="$mylist" :search="$search" />
 </nav>
 
+@if ($mylist)
 <livewire:grid :mylist="$mylist" :search="$search" />
 
 @livewireScripts

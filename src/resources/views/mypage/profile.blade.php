@@ -35,12 +35,19 @@
             @if (isset($buy))
             <a href="/mypage/?page=sell" class="tab">出品した商品</a>
             <a href="/mypage/?page=buy" class="tab active">購入した商品</a>
+            <a href="/mypage/?page=deal" class="tab">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
             @elseif (isset($sell))
             <a href="/mypage/?page=sell" class="tab active">出品した商品</a>
             <a href="/mypage/?page=buy" class="tab">購入した商品</a>
+            <a href="/mypage/?page=deal" class="tab">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
+            @elseif (isset($deal))
+            <a href="/mypage/?page=sell" class="tab">出品した商品</a>
+            <a href="/mypage/?page=buy" class="tab">購入した商品</a>
+            <a href="/mypage/?page=deal" class="tab active">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
             @else
             <a href="/mypage/?page=sell" class="tab">出品した商品</a>
             <a href="/mypage/?page=buy" class="tab">購入した商品</a>
+            <a href="/mypage/?page=deal" class="tab">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
             @endif
         </div>
 
@@ -65,6 +72,18 @@
                 <p class="sold">Sold</p>
                 @endif
             </figure>
+            @endforeach
+            @endif
+            @elseif (isset($deal))
+            @if ($user->deals != null)
+            @foreach ($user->deals as $deal)
+            @if ($deal->finished === 0)
+            <figure class="item-card">
+                <a href="/item/{{ $deal->item->id }}"><img src="{{ asset(Storage::url($deal->item->getImagePath())) }}" alt="商品画像" class="item-image grayed-out"></a>
+                <figcaption class="item-name">{{ $deal->item->name }}</figcaption>
+                <p class="count">{{ $deal->unreadMessagesCount($deal->id) }}</p>
+            </figure>
+            @endif
             @endforeach
             @endif
             @else

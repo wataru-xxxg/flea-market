@@ -8,6 +8,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Profile;
+use App\Models\Deal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -21,22 +22,29 @@ class MyPageController extends Controller
         $user = Auth::user();
 
         $items = Item::all();
+        $deals = Deal::all();
+        $unreadMessages = $user->unreadMessagesCount();
 
         if (is_null($page)) {
-            return view("mypage.profile", compact("user", "items"));
+            return view("mypage.profile", compact("user", "items", "deals", "unreadMessages"));
         }
 
         if ($page == "buy") {
             $buy = true;
-            return view("mypage.profile", compact("user", "buy"));
+            return view("mypage.profile", compact("user", "buy", "unreadMessages"));
         }
 
         if ($page == "sell") {
             $sell = true;
-            return view("mypage.profile", compact("user", "sell"));
+            return view("mypage.profile", compact("user", "sell", "unreadMessages"));
         }
 
-        return view("mypage.profile", compact("user", "items"));
+        if ($page == "deal") {
+            $deal = true;
+            return view("mypage.profile", compact("user", "deal", "unreadMessages"));
+        }
+
+        return view("mypage.profile", compact("user", "items", "unreadMessages"));
     }
 
     public function edit()

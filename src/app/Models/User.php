@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -70,5 +71,25 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($key !== $this->getRememberTokenName()) {
             parent::setAttribute($key, $value);
         }
+    }
+
+    public function deals()
+    {
+        return $this->hasManyThrough(Deal::class, Purchase::class, 'user_id', 'purchase_id');
+    }
+
+    public function unreadMessagesCount()
+    {
+        $user = Auth::user();
+        $deals = $this->deals;
+        $receivedUnreadMessagesCount = 0;
+        $sentUnreadMessagesCount = 0;
+
+        foreach ($deals as $deal) {
+            $receivedUnreadMessagesCount += $deal->messages()->where('read', 0)->where('to_user_id', $user->id)->count();
+            $sentUnreadMessagesCount += $deal->messages()->where('read', 0)->where('from_user_id', $user->id)->count();
+        }
+
+        return $receivedUnreadMessagesCount + $sentUnreadMessagesCount;
     }
 }

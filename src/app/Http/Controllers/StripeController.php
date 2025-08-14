@@ -7,6 +7,7 @@ use App\Http\Requests\PurchaseRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Purchase;
+use App\Models\Deal;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 
@@ -60,6 +61,10 @@ class StripeController extends Controller
         $purchase->save();
 
         $item = Item::find($item_id)->update(['purchased' => 1]);
+
+        $deal = new Deal();
+        $deal->purchase_id = $purchase->id;
+        $deal->save();
 
         return redirect('/');
     }
