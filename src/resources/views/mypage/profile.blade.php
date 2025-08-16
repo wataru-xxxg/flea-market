@@ -35,19 +35,35 @@
             @if (isset($buy))
             <a href="/mypage/?page=sell" class="tab">出品した商品</a>
             <a href="/mypage/?page=buy" class="tab active">購入した商品</a>
-            <a href="/mypage/?page=deal" class="tab">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
+            <a href="/mypage/?page=deal" class="tab">取引中の商品
+                @if ($unreadMessages > 0)
+                <span class="notification-badge">{{ $unreadMessages }}</span>
+                @endif
+            </a>
             @elseif (isset($sell))
             <a href="/mypage/?page=sell" class="tab active">出品した商品</a>
             <a href="/mypage/?page=buy" class="tab">購入した商品</a>
-            <a href="/mypage/?page=deal" class="tab">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
+            <a href="/mypage/?page=deal" class="tab">取引中の商品
+                @if ($unreadMessages > 0)
+                <span class="notification-badge">{{ $unreadMessages }}</span>
+                @endif
+            </a>
             @elseif (isset($deal))
             <a href="/mypage/?page=sell" class="tab">出品した商品</a>
             <a href="/mypage/?page=buy" class="tab">購入した商品</a>
-            <a href="/mypage/?page=deal" class="tab active">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
+            <a href="/mypage/?page=deal" class="tab active">取引中の商品
+                @if ($unreadMessages > 0)
+                <span class="notification-badge">{{ $unreadMessages }}</span>
+                @endif
+            </a>
             @else
             <a href="/mypage/?page=sell" class="tab">出品した商品</a>
             <a href="/mypage/?page=buy" class="tab">購入した商品</a>
-            <a href="/mypage/?page=deal" class="tab">取引中の商品<span class="count">{{ $unreadMessages }}</span></a>
+            <a href="/mypage/?page=deal" class="tab">取引中の商品
+                @if ($unreadMessages > 0)
+                <span class="notification-badge">{{ $unreadMessages }}</span>
+                @endif
+            </a>
             @endif
         </div>
 
@@ -75,17 +91,17 @@
             @endforeach
             @endif
             @elseif (isset($deal))
-            @if ($user->deals != null)
-            @foreach ($user->deals as $deal)
-            @if ($deal->finished === 0)
+            @foreach ($deals as $deal)
+            @if ($deal->finished === 0 && ($deal->purchasedUser->id === $user->id || $deal->seller->id === $user->id))
             <figure class="item-card">
-                <a href="/item/{{ $deal->item->id }}"><img src="{{ asset(Storage::url($deal->item->getImagePath())) }}" alt="商品画像" class="item-image grayed-out"></a>
+                <a href="/mypage/chat/{{ $deal->item->id }}"><img src="{{ asset(Storage::url($deal->item->getImagePath())) }}" alt="商品画像" class="item-image"></a>
                 <figcaption class="item-name">{{ $deal->item->name }}</figcaption>
-                <p class="count">{{ $deal->unreadMessagesCount($deal->id) }}</p>
+                @if ($deal->unreadMessagesCount($deal->id, $user->id) > 0)
+                <span class="notification-badge">{{ $deal->unreadMessagesCount($deal->id, $user->id) }}</span>
+                @endif
             </figure>
             @endif
             @endforeach
-            @endif
             @else
             @foreach ($items as $item)
             <figure class="item-card">
