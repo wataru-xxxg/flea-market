@@ -82,14 +82,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $user = Auth::user();
         $deals = $this->deals;
-        $receivedUnreadMessagesCount = 0;
-        $sentUnreadMessagesCount = 0;
+        $unreadMessagesCount = 0;
 
         foreach ($deals as $deal) {
-            $receivedUnreadMessagesCount += $deal->messages()->where('read', 0)->where('to_user_id', $user->id)->count();
-            $sentUnreadMessagesCount += $deal->messages()->where('read', 0)->where('from_user_id', $user->id)->count();
+            $unreadMessagesCount += $deal->unreadMessagesCount($deal->id, $user->id);
         }
 
-        return $receivedUnreadMessagesCount + $sentUnreadMessagesCount;
+        return $unreadMessagesCount;
     }
 }

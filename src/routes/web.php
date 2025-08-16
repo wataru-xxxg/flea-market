@@ -26,6 +26,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage', [MyPageController::class, 'index']);
     Route::get('/mypage/profile', [MyPageController::class, 'edit']);
     Route::post('/mypage/profile', [MyPageController::class, 'upsert']);
+    Route::get('/mypage/chat/{deal_id}', [MyPageController::class, 'chat']);
+    Route::post('/mypage/chat/message', [MyPageController::class, 'message']);
+    Route::get('/mypage/chat/message/{message_id}/edit', [MyPageController::class, 'editMessage']);
+    Route::post('/mypage/chat/message/{message_id}/edit', [MyPageController::class, 'updateMessage']);
+    Route::post('/mypage/chat/message/{message_id}/update', [MyPageController::class, 'updateMessageAjax']);
+    Route::post('/mypage/chat/message/{message_id}/delete', [MyPageController::class, 'deleteMessageAjax']);
     Route::get("/sell", [ItemController::class, "sell"]);
     Route::post("/sell", [ItemController::class, "exhibit"]);
     Route::get("/item/favorite/{item_id}", [ItemController::class, "favorite"]);

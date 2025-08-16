@@ -19,6 +19,7 @@ class CreateMessagesTable extends Migration
             $table->foreignId('to_user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('from_user_id')->constrained('users')->cascadeOnDelete();
             $table->string('message');
+            $table->string('imagePath')->nullable();
             $table->boolean('read')->default(false);
             $table->timestamps();
         });
