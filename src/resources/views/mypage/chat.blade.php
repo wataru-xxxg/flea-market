@@ -122,7 +122,9 @@
             @csrf
             <div class="message-input-area">
                 <input type="hidden" name="deal_id" value="{{ $currentDeal->id }}">
-                <input type="text" class="message-input" placeholder="取引メッセージを記入してください" name="message">
+                <div class="message-input-wrapper">
+                    <input type="text" class="message-input" placeholder="取引メッセージを記入してください" name="message">
+                </div>
                 <div class="file-input-wrapper">
                     <input type="file" class="file-input" name="image" id="image-input">
                     <label for="image-input" class="image-btn">画像を追加</label>
@@ -134,6 +136,15 @@
                     </svg>
                 </button>
             </div>
+            @if ($errors->any())
+            <div class="error-message-container">
+                @foreach ($errors->all() as $error)
+                <div class="error-message">
+                    {{ $error }}
+                </div>
+                @endforeach
+            </div>
+            @endif
         </form>
     </main>
 </div>

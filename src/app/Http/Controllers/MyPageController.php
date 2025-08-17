@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\ChatRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Profile;
@@ -128,7 +129,7 @@ class MyPageController extends Controller
         return view("mypage.chat", compact("currentDeal", "deals", "user", "messages", "purchaserFlag", "partner", "item"));
     }
 
-    public function message(Request $request)
+    public function message(ChatRequest $request)
     {
         $fromUserId = Auth::user()->id;
         $deal = Deal::find($request->deal_id);
@@ -154,7 +155,7 @@ class MyPageController extends Controller
         return redirect()->back();
     }
 
-    public function updateMessageAjax(Request $request, $message_id)
+    public function updateMessageAjax(ChatRequest $request, $message_id)
     {
         $message = Message::find($message_id);
 
