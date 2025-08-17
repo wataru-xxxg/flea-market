@@ -123,7 +123,7 @@
             <div class="message-input-area">
                 <input type="hidden" name="deal_id" value="{{ $currentDeal->id }}">
                 <div class="message-input-wrapper">
-                    <input type="text" class="message-input" placeholder="取引メッセージを記入してください" name="message">
+                    <input type="text" class="message-input" placeholder="取引メッセージを記入してください" name="message" id="message-input">
                 </div>
                 <div class="file-input-wrapper">
                     <input type="file" class="file-input" name="image" id="image-input">
@@ -352,6 +352,28 @@
         if (isSeller && dealStatus === 'processing') {
             showFeedbackModal();
         }
+
+        // メッセージ入力内容の保持・復元
+        const messageInput = document.getElementById('message-input');
+        const dealId = '{{ $currentDeal->id }}';
+        const storageKey = `chat_message_${dealId}`;
+
+        // 保存されたメッセージを復元
+        const savedMessage = localStorage.getItem(storageKey);
+        if (savedMessage) {
+            messageInput.value = savedMessage;
+        }
+
+        // メッセージ入力時にlocalStorageに保存
+        messageInput.addEventListener('input', function() {
+            localStorage.setItem(storageKey, this.value);
+        });
+
+        // フォーム送信時にlocalStorageから削除
+        const form = messageInput.closest('form');
+        form.addEventListener('submit', function() {
+            localStorage.removeItem(storageKey);
+        });
     });
 
     function setRating(rating) {
