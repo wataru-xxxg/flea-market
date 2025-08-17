@@ -24,6 +24,20 @@
         </div>
         <div class="profile-info">
             <h1 class="username">{{ $user->name }}</h1>
+            <div class="rating-display">
+                @php
+                $averageRating = $user->getAverageRating();
+                @endphp
+                <div class="stars">
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <=$averageRating)
+                        <span class="star filled">★</span>
+                        @else
+                        <span class="star empty">★</span>
+                        @endif
+                        @endfor
+                </div>
+            </div>
         </div>
         <div class="profile-actions">
             <a href="/mypage/profile" class="edit-profile-button">プロフィールを編集</a>
@@ -92,7 +106,7 @@
             @endif
             @elseif (isset($deal))
             @foreach ($deals as $deal)
-            @if ($deal->finished === 0 && ($deal->purchasedUser->id === $user->id || $deal->seller->id === $user->id))
+            @if ($deal->status !== 'completed' && ($deal->purchasedUser->id === $user->id || $deal->seller->item->user->id === $user->id))
             <figure class="item-card">
                 <a href="/mypage/chat/{{ $deal->item->id }}"><img src="{{ asset(Storage::url($deal->item->getImagePath())) }}" alt="商品画像" class="item-image"></a>
                 <figcaption class="item-name">{{ $deal->item->name }}</figcaption>

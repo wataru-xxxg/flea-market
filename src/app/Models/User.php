@@ -81,13 +81,28 @@ class User extends Authenticatable implements MustVerifyEmail
     public function unreadMessagesCount()
     {
         $user = Auth::user();
-        $deals = $this->deals;
+        $deals = $this->deals()->get();
         $unreadMessagesCount = 0;
-
         foreach ($deals as $deal) {
             $unreadMessagesCount += $deal->unreadMessagesCount($deal->id, $user->id);
         }
 
         return $unreadMessagesCount;
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function getAverageRating()
+    {
+        $reviews = $this->reviews;
+        if ($reviews->count() === 0) {
+            return 0;
+        }
+
+        $totalRating = $reviews->sum('rating');
+        return round($totalRating / $reviews->count());
     }
 }

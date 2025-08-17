@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Profile;
 use App\Models\Deal;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -23,8 +24,18 @@ class MyPageController extends Controller
         $user = Auth::user();
 
         $items = Item::all();
-        $deals = Deal::all();
-        $unreadMessages = User::find($user->id)->unreadMessagesCount();
+        $deals = Deal::with(['messages' => function ($query) use ($user) {
+            $query->where('to_user_id', $user->id)
+                ->where('read', false)
+                ->orderBy('created_at', 'desc');
+        }])->get()->sortByDesc(function ($deal) {
+            return $deal->messages->first() ? $deal->messages->first()->created_at : $deal->created_at;
+        });
+
+        $unreadMessages = 0;
+        foreach ($deals as $deal) {
+            $unreadMessages += $deal->unreadMessagesCount($deal->id, $user->id);
+        }
 
         if (is_null($page)) {
             return view("mypage.profile", compact("user", "items", "deals", "unreadMessages"));
@@ -88,16 +99,23 @@ class MyPageController extends Controller
     public function chat($deal_id)
     {
         $user = Auth::user();
-        $deal = Deal::find($deal_id);
-        $deals = Deal::all();
+        $currentDeal = Deal::find($deal_id);
+        $deals = Deal::with(['messages' => function ($query) use ($user) {
+            $query->where('to_user_id', $user->id)
+                ->where('read', false)
+                ->orderBy('created_at', 'desc');
+        }])->get()->sortByDesc(function ($deal) {
+            return $deal->messages->first() ? $deal->messages->first()->created_at : $deal->created_at;
+        });
         $messages = Message::where('deal_id', $deal_id)->get();
         $purchaserFlag = false;
+        $item = Item::find($currentDeal->item->id);
 
-        if ($deal->purchasedUser->id === $user->id) {
+        if ($currentDeal->purchasedUser->id === $user->id) {
             $purchaserFlag = true;
-            $partner = $deal->seller->item->user;
+            $partner = $currentDeal->seller->item->user;
         } else {
-            $partner = $deal->purchasedUser;
+            $partner = $currentDeal->purchasedUser;
         }
 
         foreach ($messages as $message) {
@@ -107,7 +125,7 @@ class MyPageController extends Controller
             }
         }
 
-        return view("mypage.chat", compact("deal", "deals", "user", "messages", "purchaserFlag", "partner"));
+        return view("mypage.chat", compact("currentDeal", "deals", "user", "messages", "purchaserFlag", "partner", "item"));
     }
 
     public function message(Request $request)
@@ -117,7 +135,7 @@ class MyPageController extends Controller
         $image = $request->file('image');
 
         if ($fromUserId === $deal->purchasedUser->id) {
-            $toUserId = $deal->seller->id;
+            $toUserId = $deal->purchase->item->user->id;
         } else {
             $toUserId = $deal->purchasedUser->id;
         }
@@ -133,20 +151,6 @@ class MyPageController extends Controller
         }
         $message->save();
 
-        return redirect()->back();
-    }
-
-    public function editMessage($message_id)
-    {
-        $message = Message::find($message_id);
-        return view("mypage.chat", compact("message"));
-    }
-
-    public function updateMessage(Request $request, $message_id)
-    {
-        $message = Message::find($message_id);
-        $message->message = $request->message;
-        $message->save();
         return redirect()->back();
     }
 
@@ -179,6 +183,26 @@ class MyPageController extends Controller
         }
 
         $message->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function reviewAjax(Request $request, $deal_id)
+    {
+        $deal = Deal::find($deal_id);
+        if ($deal->status === 'pending') {
+            $deal->status = 'processing';
+            $deal->save();
+        } else {
+            $deal->status = 'completed';
+            $deal->save();
+        }
+
+        $review = new Review();
+        $review->deal_id = $deal_id;
+        $review->user_id = $request->partner_id;
+        $review->rating = $request->rating;
+        $review->save();
+
         return response()->json(['success' => true]);
     }
 }
