@@ -17,7 +17,9 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container"
+    data-is-seller="{{ $purchaserFlag ? 'false' : 'true' }}"
+    data-deal-status="{{ $currentDeal->status }}">
     <!-- サイドバー -->
     <aside class="sidebar">
         <div class="sidebar-section">
@@ -25,7 +27,7 @@
         </div>
         <div class="product-list">
             @foreach ($deals as $deal)
-            @if ($deal->finished === 0 && ($deal->purchasedUser->id === $user->id || $deal->seller->id === $user->id))
+            @if ($deal->status !== 'completed' && ($deal->purchasedUser->id === $user->id || $deal->seller->item->user->id === $user->id))
             <div class="product-item">
                 <a href="/mypage/chat/{{ $deal->id }}" class="product-link">
                     <span>{{ $deal->item->name }}</span>
@@ -48,16 +50,19 @@
                 @endif
             </div>
             <h2 class="trade-header-title">「{{ $partner->name }}」さんとの取引画面</h2>
+            @if ($user->id === $currentDeal->purchasedUser->id && $currentDeal->status === 'pending')
+            <button type="button" class="trade-header-button" onclick="showFeedbackModal()">取引を完了する</button>
+            @endif
         </div>
 
         <!-- 商品情報 -->
         <div class="product-info">
             <div class="product-image">
-                <img src="{{ asset(Storage::url($deal->item->getImagePath())) }}" alt="商品画像" class="image-placeholder">
+                <img src="{{ asset(Storage::url($item->getImagePath())) }}" alt="商品画像" class="image-placeholder">
             </div>
             <div class="product-details">
-                <h3>{{ $deal->item->name }}</h3>
-                <p class="price">{{ $deal->item->price }}円</p>
+                <h3>{{ $item->name }}</h3>
+                <p class="price">{{ $item->price }}円</p>
             </div>
         </div>
 
@@ -116,7 +121,7 @@
         <form action="/mypage/chat/message" method="post" enctype="multipart/form-data">
             @csrf
             <div class="message-input-area">
-                <input type="hidden" name="deal_id" value="{{ $deal->id }}">
+                <input type="hidden" name="deal_id" value="{{ $currentDeal->id }}">
                 <input type="text" class="message-input" placeholder="取引メッセージを記入してください" name="message">
                 <div class="file-input-wrapper">
                     <input type="file" class="file-input" name="image" id="image-input">
@@ -131,6 +136,32 @@
             </div>
         </form>
     </main>
+</div>
+
+<!-- フィードバックモーダル -->
+<div id="feedbackModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">取引が完了しました。</h3>
+        </div>
+        <div class="modal-body">
+            <p class="feedback-prompt">今回の取引相手はどうでしたか?</p>
+            <div class="rating-container">
+                <div class="stars">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                </div>
+                <input type="hidden" id="selectedRating" value="0">
+                <input type="hidden" id="partner_id" value="{{ $partner->id }}">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="submit-feedback-btn" onclick="submitFeedback('{{ $currentDeal->id }}')">送信する</button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -224,6 +255,108 @@
                 console.error('Error:', error);
                 alert('メッセージの削除に失敗しました。');
             });
+    }
+
+    // フィードバックモーダル関連の関数
+    function showFeedbackModal() {
+        document.getElementById('feedbackModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // スクロールを無効化
+    }
+
+    function hideFeedbackModal() {
+        document.getElementById('feedbackModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; // スクロールを有効化
+        resetRating();
+    }
+
+    function resetRating() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.classList.remove('active');
+        });
+        document.getElementById('selectedRating').value = '0';
+    }
+
+    function submitFeedback(dealId) {
+        const rating = document.getElementById('selectedRating').value;
+        const partnerId = document.getElementById('partner_id').value;
+        if (rating === '0') {
+            alert('評価を選択してください。');
+            return;
+        }
+
+        // CSRFトークンを取得
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // フィードバックをサーバーに送信
+        fetch('/mypage/chat/review/' + dealId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({
+                rating: rating,
+                partner_id: partnerId
+            })
+        }).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            if (data.success) {
+                alert('フィードバックを送信しました。ありがとうございます！');
+                hideFeedbackModal();
+                // トップ画面にリダイレクト
+                window.location.href = '/';
+            } else {
+                alert('フィードバックの送信に失敗しました。');
+            }
+        }).catch(function(error) {
+            console.error('Error:', error);
+            alert('フィードバックの送信に失敗しました。');
+        });
+    }
+
+    // 星評価のクリックイベント
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.getAttribute('data-rating');
+                setRating(rating);
+            });
+        });
+
+        // モーダル外クリックで閉じる
+        document.getElementById('feedbackModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideFeedbackModal();
+            }
+        });
+
+        // 出品者がprocessing状態の取引画面を開いた時に自動でモーダルを表示
+        const container = document.querySelector('.container');
+        const isSeller = container.getAttribute('data-is-seller') === 'true';
+        const dealStatus = container.getAttribute('data-deal-status');
+        if (isSeller && dealStatus === 'processing') {
+            showFeedbackModal();
+        }
+    });
+
+    function setRating(rating) {
+        const stars = document.querySelectorAll('.star');
+        const selectedRating = document.getElementById('selectedRating');
+
+        selectedRating.value = rating;
+
+        stars.forEach(star => {
+            const starRating = star.getAttribute('data-rating');
+            if (starRating <= rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
     }
 </script>
 

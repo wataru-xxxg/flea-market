@@ -83,6 +83,23 @@
     font-weight: normal;
 }
 
+.trade-header-button {
+    margin-left: auto;
+    margin-right: 15px;
+    padding: 10px 20px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.trade-header-button:hover {
+    background-color: #ff3333;
+}
+
 /* 商品情報 */
 .product-info {
     display: flex;
@@ -386,5 +403,121 @@
 
     .message-input {
         min-width: 200px;
+    }
+}
+
+/* フィードバックモーダル */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fdfce6;
+    border-radius: 12px;
+    padding: 0;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid #000000;
+}
+
+.modal-header {
+    padding: 10px 15px 10px 15px;
+    border-bottom: 1px solid #000000;
+    text-align: center;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: normal;
+    color: #333;
+    text-align: left;
+}
+
+.modal-body {
+    padding: 10px;
+    text-align: center;
+}
+
+.feedback-prompt {
+    color: #868686;
+    margin: 0 0 10px 0;
+    font-size: 0.875rem;
+    text-align: left;
+}
+
+.rating-container {
+    margin-bottom: 10px;
+}
+
+.stars {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.star {
+    font-size: 4rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    user-select: none;
+}
+
+.star:hover,
+.star.active {
+    color: #ffd700;
+}
+
+.modal-footer {
+    padding: 15px 15px 15px 15px;
+    text-align: right;
+    border-top: 1px solid #000000;
+}
+
+.submit-feedback-btn {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 1.125rem;
+}
+
+.submit-feedback-btn:hover {
+    background-color: #ff5252;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 15px;
+    }
+
+    .stars {
+        gap: 6px;
+    }
+
+    .star {
+        font-size: 20px;
     }
 }
