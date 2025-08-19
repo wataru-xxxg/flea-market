@@ -32,3 +32,22 @@
 - 開発環境：http://localhost/
 - phpMyAdmin：http://localhost:8080/
 - mailhog：http://localhost:8025/
+
+## ログイン情報
+
+### テスト 1
+
+- email：test1@test.com
+- password：password
+- CO01 ～ CO05 の出品者
+
+### テスト 2
+
+- email：test2@test2.com
+- password：password
+- CO06 ～ CO10 の出品者
+
+### テスト 3
+
+- email：test3@test.com
+- password：password
