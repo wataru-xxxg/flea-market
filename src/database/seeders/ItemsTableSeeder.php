@@ -89,7 +89,7 @@ class ItemsTableSeeder extends Seeder
         $image = file_get_contents('https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Music+Mic+4632231.jpg');
         Storage::put('public/image/item/Mike.jpg', $image);
         $param = [
-            'user_id' => 1,
+            'user_id' => 2,
             'name' => 'マイク',
             'brand' => 'ソニー',
             'description' => '高音質のレコーディング用マイク',
@@ -103,7 +103,7 @@ class ItemsTableSeeder extends Seeder
         $image = file_get_contents('https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg');
         Storage::put('public/image/item/Bag.jpg', $image);
         $param = [
-            'user_id' => 1,
+            'user_id' => 2,
             'name' => 'ショルダーバッグ',
             'brand' => 'ユニクロ',
             'description' => 'おしゃれなショルダーバッグ',
@@ -117,7 +117,7 @@ class ItemsTableSeeder extends Seeder
         $image = file_get_contents('https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Tumbler+souvenir.jpg');
         Storage::put('public/image/item/Tumbler.jpg', $image);
         $param = [
-            'user_id' => 1,
+            'user_id' => 2,
             'name' => 'タンブラー',
             'brand' => 'サーモス',
             'description' => '使いやすいタンブラー',
@@ -131,7 +131,7 @@ class ItemsTableSeeder extends Seeder
         $image = file_get_contents('https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg');
         Storage::put('public/image/item/Mill.jpg', $image);
         $param = [
-            'user_id' => 1,
+            'user_id' => 2,
             'name' => 'コーヒーミル',
             'brand' => 'デロンギ',
             'description' => '手動のコーヒーミル',
@@ -145,7 +145,7 @@ class ItemsTableSeeder extends Seeder
         $image = file_get_contents('https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg');
         Storage::put('public/image/item/Make.jpg', $image);
         $param = [
-            'user_id' => 1,
+            'user_id' => 2,
             'name' => 'メイクセット',
             'brand' => '無印良品',
             'description' => '便利なメイクアップセット',
