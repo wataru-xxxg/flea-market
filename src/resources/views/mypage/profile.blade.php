@@ -28,6 +28,7 @@
                 @php
                 $averageRating = $user->getAverageRating();
                 @endphp
+                @if ($user->reviews->count() > 0)
                 <div class="stars">
                     @for ($i = 1; $i <= 5; $i++)
                         @if ($i <=$averageRating)
@@ -37,6 +38,7 @@
                         @endif
                         @endfor
                 </div>
+                @endif
             </div>
         </div>
         <div class="profile-actions">

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Deal;
+use App\Observers\DealObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,5 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind('Laravel\Fortify\Http\Requests\LoginRequest', \App\Http\Requests\LoginRequest::class);
+
+        // DealObserverを登録
+        Deal::observe(DealObserver::class);
     }
 }
