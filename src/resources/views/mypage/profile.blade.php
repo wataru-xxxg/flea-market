@@ -110,7 +110,7 @@
             @foreach ($deals as $deal)
             @if ($deal->status !== 'completed' && ($deal->purchasedUser->id === $user->id || $deal->seller->item->user->id === $user->id))
             <figure class="item-card">
-                <a href="/mypage/chat/{{ $deal->item->id }}"><img src="{{ asset(Storage::url($deal->item->getImagePath())) }}" alt="商品画像" class="item-image"></a>
+                <a href="/mypage/chat/{{ $deal->id }}"><img src="{{ asset(Storage::url($deal->item->getImagePath())) }}" alt="商品画像" class="item-image"></a>
                 <figcaption class="item-name">{{ $deal->item->name }}</figcaption>
                 @if ($deal->unreadMessagesCount($deal->id, $user->id) > 0)
                 <span class="notification-badge">{{ $deal->unreadMessagesCount($deal->id, $user->id) }}</span>
