@@ -104,9 +104,10 @@ class MyPageController extends Controller
         $deals = Deal::with(['messages' => function ($query) use ($user) {
             $query->where('to_user_id', $user->id)
                 ->where('read', false)
-                ->orderBy('created_at', 'desc');
+                ->orderBy('updated_at', 'desc');
         }])->get()->sortByDesc(function ($deal) {
-            return $deal->messages->first() ? $deal->messages->first()->created_at : $deal->created_at;
+            // メッセージが存在しない場合は、非常に古い日付を返して末尾に配置
+            return $deal->messages->first() ? $deal->messages->first()->updated_at : '1900-01-01 00:00:00';
         });
         $messages = Message::where('deal_id', $deal_id)->get();
         $purchaserFlag = false;

@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'deal_id',
+        'to_user_id',
+        'from_user_id',
+        'message',
+        'imagePath',
+        'read'
+    ];
 }
